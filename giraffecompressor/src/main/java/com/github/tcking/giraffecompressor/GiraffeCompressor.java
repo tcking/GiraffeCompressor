@@ -2,8 +2,13 @@ package com.github.tcking.giraffecompressor;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
+import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
+import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler;
+import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
 import com.github.tcking.giraffecompressor.ffmpeg.FFMPEGVideoCompressor;
+import com.github.tcking.giraffecompressor.ffmpeg.FFMPEGVideoCompressor2;
 import com.github.tcking.giraffecompressor.mediacodec.JellyMediaCodecVideoCompressor;
 import com.github.tcking.giraffecompressor.mediacodec.LollipopMediaCodecVideoCompressor;
 import com.yixia.videoeditor.adapter.UtilityAdapter;
@@ -13,6 +18,7 @@ import java.io.IOException;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 /**
@@ -20,8 +26,12 @@ import rx.schedulers.Schedulers;
  */
 
 public abstract class GiraffeCompressor {
+    public static boolean DEBUG = false;
+    protected static Context context;
+    public static final String TAG = "GiraffeCompressor";
     public static final String TYPE_MEDIACODEC="media_codec";
     public static final String TYPE_FFMPEG="ffmpeg";
+    protected static boolean FFmpegNotSupported = false;
 
     protected File inputFile;
     protected File outputFile;
@@ -31,7 +41,7 @@ public abstract class GiraffeCompressor {
 
     public static GiraffeCompressor create(String type) {
         if (TYPE_FFMPEG.equals(type)) {
-            return new FFMPEGVideoCompressor();
+            return new FFMPEGVideoCompressor2();
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 return new LollipopMediaCodecVideoCompressor();
@@ -44,8 +54,38 @@ public abstract class GiraffeCompressor {
     }
 
     private static void initFFMPEG(Context context) {
-        UtilityAdapter.FFmpegInit(context, String.format("versionName=%s&versionCode=%d&sdkVersion=%s&android=%s&device=%s",
-                "1.0", 1, "1.2.0", "com.tcking.videocompressor", Build.MODEL==null?"":Build.MODEL));
+//        UtilityAdapter.FFmpegInit(context, String.format("versionName=%s&versionCode=%d&sdkVersion=%s&android=%s&device=%s",
+//                "1.0", 1, "1.2.0", "com.tcking.videocompressor", Build.MODEL==null?"":Build.MODEL));
+
+        FFmpeg ffmpeg = FFmpeg.getInstance(context);
+        try {
+            ffmpeg.loadBinary(new LoadBinaryResponseHandler() {
+
+                @Override
+                public void onStart() {
+                    Log.i(TAG, "FFmpeg init start");
+                }
+
+                @Override
+                public void onFailure() {
+                    FFmpegNotSupported = true;
+                    Log.i(TAG, "FFmpeg init failure");
+                }
+
+                @Override
+                public void onSuccess() {
+                    Log.i(TAG, "FFmpeg init success");
+                }
+
+                @Override
+                public void onFinish() {}
+            });
+        } catch (FFmpegNotSupportedException e) {
+            // Handle if FFmpeg is not supported by device
+            FFmpegNotSupported = true;
+            e.printStackTrace();
+
+        }
     }
 
     public static GiraffeCompressor create() {
@@ -110,8 +150,17 @@ public abstract class GiraffeCompressor {
             }
         });
 
-        return resultObservable.subscribeOn(Schedulers.io());
+        return resultObservable.subscribeOn(Schedulers.io()).doOnUnsubscribe(new Action0() {
+            @Override
+            public void call() {
+                doOnUnsubscribe();
+            }
+        });
     }
+
+    protected void doOnUnsubscribe(){
+
+    };
 
     /**
      * 检查参数
@@ -145,7 +194,8 @@ public abstract class GiraffeCompressor {
         }
     };
 
-    public static void init(Context context) {
+    public static void init(Context ctx) {
+        context = ctx;
         initFFMPEG(context);
     }
 
