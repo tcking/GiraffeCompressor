@@ -7,11 +7,10 @@ import android.util.Log;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
-import com.github.tcking.giraffecompressor.ffmpeg.FFMPEGVideoCompressor;
 import com.github.tcking.giraffecompressor.ffmpeg.FFMPEGVideoCompressor2;
+import com.github.tcking.giraffecompressor.ffmpeg.FFmpegExecutor;
 import com.github.tcking.giraffecompressor.mediacodec.JellyMediaCodecVideoCompressor;
 import com.github.tcking.giraffecompressor.mediacodec.LollipopMediaCodecVideoCompressor;
-import com.yixia.videoeditor.adapter.UtilityAdapter;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +47,7 @@ public abstract class GiraffeCompressor {
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                 return new JellyMediaCodecVideoCompressor();
             } else {
-                return new FFMPEGVideoCompressor();
+                return new FFMPEGVideoCompressor2();
             }
         }
     }
@@ -131,11 +130,9 @@ public abstract class GiraffeCompressor {
                         File tmp = new File(outputFilePath + ".tmp");
                         outputFile.renameTo(tmp);
                         String cmd = "ffmpeg -i " + tmp.getAbsolutePath() + " -i " + watermarkFile.getAbsolutePath() + " -filter_complex \"overlay=x=0:y=0\" -f mp4 " + outputFilePath;
-                        boolean ok = UtilityAdapter.FFmpegRun("", cmd) == 0;
+                        ;
+                        new FFmpegExecutor(context).exec(cmd);
                         tmp.delete();
-                        if (!ok) {
-                            throw new RuntimeException("exc error:"+cmd);
-                        }
                     }
                     result.endTime = System.currentTimeMillis();
 
