@@ -60,3 +60,6 @@ GiraffeCompressor.create() //two implementations: mediacodec and ffmpeg,default 
                   })
 
 ```
+
+## screenshot
+![](https://raw.githubusercontent.com/tcking/GiraffeCompressor/master/screencap/device-2017-09-14-155814.png)
