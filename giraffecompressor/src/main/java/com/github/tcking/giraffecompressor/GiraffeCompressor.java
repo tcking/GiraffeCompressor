@@ -2,11 +2,8 @@ package com.github.tcking.giraffecompressor;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 
-import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
-import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler;
-import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
+import com.github.tcking.giraffecompressor.ffmpeg.FFMPEGCmdExecutorFactory;
 import com.github.tcking.giraffecompressor.ffmpeg.FFMPEGVideoCompressor2;
 import com.github.tcking.giraffecompressor.ffmpeg.FFmpegExecutor;
 import com.github.tcking.giraffecompressor.mediacodec.JellyMediaCodecVideoCompressor;
@@ -52,39 +49,12 @@ public abstract class GiraffeCompressor {
         }
     }
 
+    public static Context getContext() {
+        return context;
+    }
+
     private static void initFFMPEG(Context context) {
-//        UtilityAdapter.FFmpegInit(context, String.format("versionName=%s&versionCode=%d&sdkVersion=%s&android=%s&device=%s",
-//                "1.0", 1, "1.2.0", "com.tcking.videocompressor", Build.MODEL==null?"":Build.MODEL));
-
-        FFmpeg ffmpeg = FFmpeg.getInstance(context);
-        try {
-            ffmpeg.loadBinary(new LoadBinaryResponseHandler() {
-
-                @Override
-                public void onStart() {
-                    Log.i(TAG, "FFmpeg init start");
-                }
-
-                @Override
-                public void onFailure() {
-                    FFmpegNotSupported = true;
-                    Log.i(TAG, "FFmpeg init failure");
-                }
-
-                @Override
-                public void onSuccess() {
-                    Log.i(TAG, "FFmpeg init success");
-                }
-
-                @Override
-                public void onFinish() {}
-            });
-        } catch (FFmpegNotSupportedException e) {
-            // Handle if FFmpeg is not supported by device
-            FFmpegNotSupported = true;
-            e.printStackTrace();
-
-        }
+        FFMPEGCmdExecutorFactory.create(context).init(context);
     }
 
     public static GiraffeCompressor create() {

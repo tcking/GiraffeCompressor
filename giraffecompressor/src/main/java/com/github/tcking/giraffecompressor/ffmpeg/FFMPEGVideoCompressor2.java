@@ -2,7 +2,6 @@ package com.github.tcking.giraffecompressor.ffmpeg;
 
 import android.util.Log;
 
-import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.tcking.giraffecompressor.GiraffeCompressor;
 
 import java.io.IOException;
@@ -23,6 +22,7 @@ public class FFMPEGVideoCompressor2 extends GiraffeCompressor {
                 , outputFile.getAbsoluteFile());
 
         new FFmpegExecutor(context).exec(cmd);
+        FFMPEGCmdExecutorFactory.create(context).exec(cmd);
 
 
         Log.d(TAG, "==========compress over===========");
@@ -31,6 +31,6 @@ public class FFMPEGVideoCompressor2 extends GiraffeCompressor {
 
     @Override
     protected void doOnUnsubscribe() {
-        new FFmpegExecutor(context).killRunningProcesses();
+        FFMPEGCmdExecutorFactory.create(context).killRunningProcesses(null);
     }
 }
