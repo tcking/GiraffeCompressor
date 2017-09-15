@@ -4,8 +4,7 @@ import android.content.Context;
 import android.os.Build;
 
 import com.github.tcking.giraffecompressor.ffmpeg.FFMPEGCmdExecutorFactory;
-import com.github.tcking.giraffecompressor.ffmpeg.FFMPEGVideoCompressor2;
-import com.github.tcking.giraffecompressor.ffmpeg.FFmpegExecutor;
+import com.github.tcking.giraffecompressor.ffmpeg.FFMPEGVideoCompressor;
 import com.github.tcking.giraffecompressor.mediacodec.JellyMediaCodecVideoCompressor;
 import com.github.tcking.giraffecompressor.mediacodec.LollipopMediaCodecVideoCompressor;
 
@@ -37,14 +36,14 @@ public abstract class GiraffeCompressor {
 
     public static GiraffeCompressor create(String type) {
         if (TYPE_FFMPEG.equals(type)) {
-            return new FFMPEGVideoCompressor2();
+            return new FFMPEGVideoCompressor();
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 return new LollipopMediaCodecVideoCompressor();
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                 return new JellyMediaCodecVideoCompressor();
             } else {
-                return new FFMPEGVideoCompressor2();
+                return new FFMPEGVideoCompressor();
             }
         }
     }
@@ -54,7 +53,7 @@ public abstract class GiraffeCompressor {
     }
 
     private static void initFFMPEG(Context context) {
-        FFMPEGCmdExecutorFactory.create(context).init(context);
+        FFMPEGCmdExecutorFactory.create().init(context);
     }
 
     public static GiraffeCompressor create() {
@@ -99,9 +98,8 @@ public abstract class GiraffeCompressor {
                     if (watermarkFile != null) {
                         File tmp = new File(outputFilePath + ".tmp");
                         outputFile.renameTo(tmp);
-                        String cmd = "ffmpeg -i " + tmp.getAbsolutePath() + " -i " + watermarkFile.getAbsolutePath() + " -filter_complex \"overlay=x=0:y=0\" -f mp4 " + outputFilePath;
-                        ;
-                        new FFmpegExecutor(context).exec(cmd);
+                        String cmd = "-i " + tmp.getAbsolutePath() + " -i " + watermarkFile.getAbsolutePath() + " -filter_complex \"overlay=x=0:y=0\" -f mp4 " + outputFilePath;
+                        FFMPEGCmdExecutorFactory.create().exec(cmd);
                         tmp.delete();
                     }
                     result.endTime = System.currentTimeMillis();

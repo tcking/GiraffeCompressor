@@ -35,7 +35,7 @@ public class UtilityAdapter {
 	 * 执行ffmpeg命令 tag 任务的唯一标识，如果标识为""，以阻塞方式运行，否则以异步方式运行 FFmpegRun("",
 	 * "ffmpeg -i \"生成的mp4\" -y -f image2 -ss 1 -t 0.001 -s 480x480 \"输出.jpg\" "
 	 * )
-	 * 
+	 *
 	 * @param strtag
 	 *            任务的唯一标识，如果标识为""，以阻塞方式运行，否则以异步方式运行
 	 * @param strcmd
@@ -70,7 +70,7 @@ public class UtilityAdapter {
 
 	/**
 	 * 设置输入参数
-	 * 
+	 *
 	 * @param inw 视频输入宽
 	 * @param inh 视频输入高
 	 * @param org 后置摄像头0，前置摄像头180
@@ -88,7 +88,7 @@ public class UtilityAdapter {
 
 	/**
 	 * 设置视频输出参数
-	 * 
+	 *
 	 * @param outw 视频输出宽
 	 * @param outh 视频输出高
 	 * @param outfps  视频输出帧率
@@ -140,7 +140,7 @@ public class UtilityAdapter {
 
 	/**
 	 * 特效处理器
-	 * 
+	 *
 	 * @param settings 特效设置: inv=/sdcard/v.rgb; ina=/sdcard/p.pcm; out=/sdcard/o.mp4; text=/sdcard/txt.png
 	 * @param surface Surface
 	 * @param holder SurfaceHolder
@@ -171,7 +171,7 @@ public class UtilityAdapter {
 
 	/**
 	 * 特效处理
-	 * 
+	 *
 	 * @param settings
 	 * @param actiontype
 	 * @return
@@ -185,7 +185,7 @@ public class UtilityAdapter {
 	public static boolean	isInitialized(){
 		return gInitialized;
 	}
-	
+
 	/** 初始化 */
 	public static void initFilterParser() {
 		if (!gInitialized) {
@@ -201,7 +201,7 @@ public class UtilityAdapter {
 
 	/**
 	 * 变声
-	 * 
+	 *
 	 * @param inPath wav音频输入
 	 * @param outPath wav音频输出
 	 * @param tempoChange 变速(语速增加%xx)

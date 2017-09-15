@@ -7,7 +7,7 @@ import android.content.Context;
  */
 
 public interface FFMPEGCmdExecutor {
-    boolean exec(String cmd);
+    void exec(String cmd);
     boolean killRunningProcesses(String tag);
     void init(Context context);
 }

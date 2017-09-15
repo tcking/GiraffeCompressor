@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         $.id(R.id.btn_play).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GiraffePlayer.play(getApplication(), new VideoInfo(Uri.parse($.id(R.id.et_output).text())));
+                GiraffePlayer.play(getApplication(),
+                        new VideoInfo(Uri.parse($.id(R.id.et_output).text())).setShowTopBar(true));
             }
         }).gone();
 

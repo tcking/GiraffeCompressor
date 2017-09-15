@@ -8,7 +8,7 @@ import android.content.Context;
 
 public class NoopExecutor implements FFMPEGCmdExecutor {
     @Override
-    public boolean exec(String cmd) {
+    public void exec(String cmd) {
         throw new RuntimeException("call FFMPEGCmdExecutorFactory.registerFFMPEGExecutor() before init");
     }
 

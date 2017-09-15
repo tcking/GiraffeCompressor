@@ -1,9 +1,7 @@
 package com.github.tcking.giraffecompressor.ffmpeg;
 
-import android.content.Context;
-
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Created by TangChao on 2017/9/14.
@@ -11,9 +9,9 @@ import java.util.TreeSet;
 
 public class FFMPEGCmdExecutorFactory {
 
-    private static Set<Class<? extends FFMPEGCmdExecutor>> executorClasss = new TreeSet<>();
+    private static Set<Class<? extends FFMPEGCmdExecutor>> executorClasss = new LinkedHashSet<>();
 
-    public static FFMPEGCmdExecutor create(Context context){
+    public static FFMPEGCmdExecutor create(){
         for (Class<? extends FFMPEGCmdExecutor> z : executorClasss) {
             try {
                 return z.newInstance();
@@ -21,7 +19,7 @@ public class FFMPEGCmdExecutorFactory {
                 e.printStackTrace();
             }
         }
-        return new NoopExecutor();
+        return new YiXiaExecutor();
     }
 
 

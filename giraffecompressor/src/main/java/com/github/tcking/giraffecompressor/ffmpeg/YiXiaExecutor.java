@@ -11,13 +11,17 @@ import com.yixia.videoeditor.adapter.UtilityAdapter;
 
 public class YiXiaExecutor implements FFMPEGCmdExecutor {
     @Override
-    public boolean exec(String cmd) {
-        return false;
+    public void exec(String cmd) {
+        int i = UtilityAdapter.FFmpegRun("", "ffmpeg " + cmd);
+        if (i!=0) {
+            throw new RuntimeException("FFMPEGCmdExecutor return :" + i);
+        }
     }
 
     @Override
     public boolean killRunningProcesses(String tag) {
-        return false;
+        UtilityAdapter.FFmpegKill(tag);
+        return true;
     }
 
     @Override

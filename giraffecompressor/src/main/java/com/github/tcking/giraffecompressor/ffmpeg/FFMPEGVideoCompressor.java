@@ -10,7 +10,7 @@ import java.io.IOException;
  * Created by tc on 5/21/17.
  */
 
-public class FFMPEGVideoCompressor2 extends GiraffeCompressor {
+public class FFMPEGVideoCompressor extends GiraffeCompressor {
 
 
     @Override
@@ -20,17 +20,13 @@ public class FFMPEGVideoCompressor2 extends GiraffeCompressor {
                 , inputFile.getAbsoluteFile()
                 , bitRate
                 , outputFile.getAbsoluteFile());
-
-        new FFmpegExecutor(context).exec(cmd);
-        FFMPEGCmdExecutorFactory.create(context).exec(cmd);
-
-
-        Log.d(TAG, "==========compress over===========");
+        FFMPEGCmdExecutorFactory.create().exec(cmd);
+        Log.d("FFMPEGVideoCompressor", "compress completed");
     }
 
 
     @Override
     protected void doOnUnsubscribe() {
-        FFMPEGCmdExecutorFactory.create(context).killRunningProcesses(null);
+        FFMPEGCmdExecutorFactory.create().killRunningProcesses("");
     }
 }
