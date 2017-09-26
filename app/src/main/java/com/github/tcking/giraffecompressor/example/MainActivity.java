@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {
-                        $.id(R.id.tv_console).text("compressing:" + inputFile.getAbsolutePath());
+                        $.id(R.id.tv_console).text("compressing:" + inputFile.getAbsolutePath()+" please wait");
                         $.id(R.id.btn_start).enabled(false).text("compressing...").showInputMethod(false);
                         $.id(R.id.btn_play).gone();
 

@@ -18,7 +18,7 @@ allprojects {
 
 //step 2: add dependency
 
-    compile 'com.github.tcking:giraffecompressor:0.1.2'
+    compile 'com.github.tcking:giraffecompressor:0.1.3'
 
 //step 3: init compressor
 
@@ -64,3 +64,8 @@ GiraffeCompressor.create() //two implementations: mediacodec and ffmpeg,default 
 ## screenshot
 
 ![](https://raw.githubusercontent.com/tcking/GiraffeCompressor/master/screenshot/device-2017-09-14-155814.png)
+
+
+## some libraries
+[ViewQuery](https://github.com/tcking/ViewQuery) very simple and easy to use helper for android views
+[GiraffePlayer2](https://github.com/tcking/GiraffePlayer2) out of the box android video player
