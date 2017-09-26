@@ -16,7 +16,7 @@ public class FFMPEGVideoCompressor extends GiraffeCompressor {
     @Override
     protected void compress() throws IOException {
 
-        final String cmd = String.format("-i %s -vcodec libx264 -b:v %s %s"
+        final String cmd = String.format("-i %s -vcodec libx264 -b:v %s -y %s"
                 , inputFile.getAbsoluteFile()
                 , bitRate
                 , outputFile.getAbsoluteFile());

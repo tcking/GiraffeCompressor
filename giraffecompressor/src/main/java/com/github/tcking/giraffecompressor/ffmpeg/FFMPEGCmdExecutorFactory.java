@@ -19,7 +19,7 @@ public class FFMPEGCmdExecutorFactory {
                 e.printStackTrace();
             }
         }
-        return new YiXiaExecutor();
+        return new WMExecutor();
     }
 
 
