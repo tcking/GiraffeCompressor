@@ -33,6 +33,12 @@ public abstract class GiraffeCompressor {
     protected int bitRate;
     protected float resizeFactor = 1.0f;
     private File watermarkFile;
+    private String filterComplex = "overlay=x=0:y=0";
+
+    public GiraffeCompressor filterComplex(String filterComplex) {
+        this.filterComplex = filterComplex;
+        return this;
+    }
 
     public static GiraffeCompressor create(String type) {
         if (TYPE_FFMPEG.equals(type)) {
@@ -98,7 +104,7 @@ public abstract class GiraffeCompressor {
                     if (watermarkFile != null) {
                         File tmp = new File(outputFilePath + ".tmp");
                         outputFile.renameTo(tmp);
-                        String cmd = "-i " + tmp.getAbsolutePath() + " -i " + watermarkFile.getAbsolutePath() + " -filter_complex \"overlay=x=0:y=0\" -f mp4 " + outputFilePath;
+                        String cmd = "-i " + tmp.getAbsolutePath() + " -i " + watermarkFile.getAbsolutePath() + " -filter_complex "+filterComplex+" -f mp4 " + outputFilePath;
                         FFMPEGCmdExecutorFactory.create().exec(cmd);
                         tmp.delete();
                     }
