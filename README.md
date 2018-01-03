@@ -18,7 +18,7 @@ allprojects {
 
 //step 2: add dependency
 
-    compile 'com.github.tcking:giraffecompressor:0.1.3'
+    compile 'com.github.tcking:giraffecompressor:0.1.4'
 
 //step 3: init compressor
 
